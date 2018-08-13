@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,8 +28,8 @@ public class SnakeGameView extends View implements Observer{
         this.width = width;
         this.height = height;
 
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width,
-                height);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(this.width + 30,
+                this.height + 30);
 
         this.setLayoutParams(layoutParams);
         this.setBackgroundColor(Color.BLACK);
@@ -47,6 +48,8 @@ public class SnakeGameView extends View implements Observer{
 
 
         int squareSize = this.width / this.currentGameState.getBoard().xTiles;
+        System.out.println(squareSize);
+        Log.d("square size", Integer.toString(squareSize));
 
             Paint redPaint = new Paint();
             redPaint.setColor(Color.RED);

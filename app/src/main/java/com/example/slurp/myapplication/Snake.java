@@ -26,7 +26,7 @@ public class Snake {
     public void grow(){
 //        Point tail = this.headAndBody.get(this.headAndBody.size() - 1);
 //        this.headAndBody.add(new Point(tail.x, tail.y));
-        snakeJointsIncludingHead++;
+        snakeJointsIncludingHead += 1;
     }
 
     public void move(String dir){

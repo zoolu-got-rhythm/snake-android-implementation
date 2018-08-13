@@ -15,10 +15,11 @@ public class Game extends Observable{
     private Apple currentApple;
     private Boolean isGameOver;
     private int currentPlayerScore;
-
     private Boolean bufferDirectionAtIndexZeroHasBeenUsed;
 
     private Timer timer;
+
+    private SnakeGameListener snakeGameListener;
 
     public Game(){
         this.playerDirectionsBuffer = new String[2];
@@ -33,7 +34,7 @@ public class Game extends Observable{
         this.currentPlayerScore = 0;
 
         this.board = new Board(30, 30);
-        this.playerSnake = new Snake(4,
+        this.playerSnake = new Snake(10,
                 this.board.getxTiles() / 2, this.board.getyTiles() / 2);
 
         Point freePositionOnBoard = Util.getRandomPositionThatDoesntCollideWithSnakeBody(
@@ -89,6 +90,9 @@ public class Game extends Observable{
             if(playerSnake.getHeadAndBody().get(0).x == this.currentApple.pos.x &&
                     playerSnake.getHeadAndBody().get(0).y == this.currentApple.pos.y){
 
+                if(snakeGameListener != null)
+                    snakeGameListener.onAppleEaten();
+
                 this.currentPlayerScore++;
 
                 playerSnake.grow();
@@ -123,6 +127,7 @@ public class Game extends Observable{
 
 
         }else{
+            this.snakeGameListener.onGameOver();
             // stop and clear timer
             this.timer.cancel();
             this.timer = null;
@@ -175,5 +180,9 @@ public class Game extends Observable{
 
     public int getCurrentPlayerScore() {
         return currentPlayerScore;
+    }
+
+    public void setSnakeGameListener(SnakeGameListener snakeGameListener) {
+        this.snakeGameListener = snakeGameListener;
     }
 }

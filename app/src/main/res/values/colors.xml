@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="nesBlue"> </color>
+    <color name="nesGreen"> </color>
+    <color name="nesYellow"> </color>
+    <color name="nesRed"> </color>
+
+    <color name="nesLightBlue"> </color>
+    <color name="nesLightGreen"> </color>
+    <color name="nesLightYellow"> </color>
+    <color name="nesLightRed"> </color>
 </resources>
