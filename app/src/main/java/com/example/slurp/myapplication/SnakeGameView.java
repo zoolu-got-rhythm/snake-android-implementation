@@ -48,7 +48,6 @@ public class SnakeGameView extends View implements Observer{
 
         int squareSize = this.width / this.currentGameState.getBoard().xTiles;
 
-        if(!currentGameState.getGameOver()) {
             Paint redPaint = new Paint();
             redPaint.setColor(Color.RED);
             Point apple = this.currentGameState.getCurrentApple().getPos();
@@ -63,7 +62,9 @@ public class SnakeGameView extends View implements Observer{
                                 (p.y * squareSize) + squareSize),
                         this.mPaint);
             }
-        }else{
+
+        if(currentGameState.getGameOver()) {
+
             String gameOver = "GAME OVER";
 
             Paint gameOverPaint = new Paint();
@@ -77,6 +78,7 @@ public class SnakeGameView extends View implements Observer{
             canvas.drawText(gameOver, (width / 2) - result.width() / 2,
                     (height / 2) + result.height() / 2, gameOverPaint);
         }
+
 
         super.onDraw(canvas);
     }

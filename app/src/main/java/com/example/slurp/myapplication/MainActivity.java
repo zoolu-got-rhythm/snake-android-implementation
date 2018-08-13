@@ -1,6 +1,7 @@
 package com.example.slurp.myapplication;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -11,17 +12,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private Game game;
+    private Handler mHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.mHandler = new Handler();
         this.game = new Game();
-        View snakeGameView = new SnakeGameView(this, 800, 800);
+        View snakeGameView = new SnakeGameView(this, 900, 900);
         game.addObserver((Observer) snakeGameView);
 
 
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         root.addView(buttonsContainer);
 
 
-        Button leftBtn = new Button(this);
+        final Button leftBtn = new Button(this);
         leftBtn.setText("left");
         RelativeLayout.LayoutParams btnLeftRelativeParams = new RelativeLayout.LayoutParams(220, 220);
         btnLeftRelativeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -60,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         leftBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                flashButton(leftBtn);
+
                 if(!game.getGameOver()){
                     game.setCurrentPlayerDirection("w");
                 }else{
@@ -71,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button upBtn = new Button(this);
+        final Button upBtn = new Button(this);
         upBtn.setText("up");
         RelativeLayout.LayoutParams btnTopRelativeParams = new RelativeLayout.LayoutParams(220, 220);
         btnTopRelativeParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -81,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         upBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                flashButton(upBtn);
 
                 if(!game.getGameOver()){
                     game.setCurrentPlayerDirection("n");
@@ -96,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         buttonsContainer.addView(upBtn);
 
 
-        Button downBtn = new Button(this);
+        final Button downBtn = new Button(this);
         downBtn.setText("down");
 
         RelativeLayout.LayoutParams btnDownRelativeParams = new RelativeLayout.LayoutParams(220, 220);
@@ -107,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         downBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                flashButton(downBtn);
 
                 if(!game.getGameOver()){
                     game.setCurrentPlayerDirection("s");
@@ -125,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonsContainer.addView(leftBtn);
 
-        Button rightBtn = new Button(this);
+        final Button rightBtn = new Button(this);
         rightBtn.setText("right");
         RelativeLayout.LayoutParams btnRightRelativeParams = new RelativeLayout.LayoutParams(220, 220);
         btnRightRelativeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -135,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                flashButton(rightBtn);
+
                 if(!game.getGameOver()){
                     game.setCurrentPlayerDirection("e");
                 }else{
@@ -162,6 +178,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void flashButton(final Button button){
+
+
+        button.setBackgroundColor(Color.GREEN);
+
+        final Timer mTimer = new Timer();
+
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        button.setBackgroundColor(Color.LTGRAY);
+                        mTimer.cancel();
+                    }
+                });
+            }
+        },  100);
     }
 
     @Override

@@ -9,21 +9,25 @@ import java.util.TimerTask;
 
 // all game logic goes inside the game class (this class)
 public class Game extends Observable{
-    private String currentPlayerDirection;
+    private String[] playerDirectionsBuffer;
     private Snake playerSnake;
     private Board board;
     private Apple currentApple;
     private Boolean isGameOver;
     private int currentPlayerScore;
 
+    private Boolean bufferDirectionAtIndexZeroHasBeenUsed;
+
     private Timer timer;
 
     public Game(){
-
+        this.playerDirectionsBuffer = new String[2];
     }
 
     // init the game state
     public void initGame(){
+
+        this.bufferDirectionAtIndexZeroHasBeenUsed = false;
         this.isGameOver = false;
 
         this.currentPlayerScore = 0;
@@ -52,18 +56,33 @@ public class Game extends Observable{
             @Override
             public void run() {
                 // notify
+                update();
                 setChanged();
                 notifyObservers(self);
-                update();
+
             }
         },1000, 1000 / 12);
+    }
+
+    private synchronized void shiftBuffer(){
+        if(this.playerDirectionsBuffer[1] != null){
+            // shift array left by 1
+            this.playerDirectionsBuffer[0] = this.playerDirectionsBuffer[1];
+            this.playerDirectionsBuffer[1] = null;
+        }
     }
 
     public void update(){
         if(!this.isGameOver){
 
             // move
-            playerSnake.move(this.currentPlayerDirection);
+            playerSnake.move(this.playerDirectionsBuffer[0]);
+
+            if(this.playerDirectionsBuffer[1] == null)
+                this.bufferDirectionAtIndexZeroHasBeenUsed = true;
+
+            // shift through buffer: unless there are no more qued directions in it but 1
+            this.shiftBuffer();
 
             // check apple
             // .equals with some objects can mean the same reference of obj, not value equality
@@ -110,12 +129,32 @@ public class Game extends Observable{
         }
     }
 
-    public void setCurrentPlayerDirection(String currentPlayerDirection) {
-        this.currentPlayerDirection = currentPlayerDirection;
+    public synchronized void setCurrentPlayerDirection(String currentPlayerDirection) {
+//        this.currentPlayerDirection = currentPlayerDirection;
+        // shift array to left
+
+        if(this.bufferDirectionAtIndexZeroHasBeenUsed){
+            this.playerDirectionsBuffer[0] = currentPlayerDirection;
+            this.bufferDirectionAtIndexZeroHasBeenUsed = false;
+            return;
+        }
+
+
+        for(int i = 0; i < this.playerDirectionsBuffer.length; i++){
+            if(this.playerDirectionsBuffer[i] == null){
+                this.playerDirectionsBuffer[i] = currentPlayerDirection;
+                return;
+            }
+        }
+
+        // shift array left by 1
+        this.playerDirectionsBuffer[0] = this.playerDirectionsBuffer[1];
+        this.playerDirectionsBuffer[1] = currentPlayerDirection;
     }
 
+
     public String getCurrentPlayerDirection() {
-        return currentPlayerDirection;
+        return this.playerDirectionsBuffer[0];
     }
 
     public Snake getPlayerSnake() {
