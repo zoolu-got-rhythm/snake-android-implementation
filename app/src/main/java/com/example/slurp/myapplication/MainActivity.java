@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout buttonsContainer = new RelativeLayout(this);
 
         RelativeLayout.LayoutParams buttonsContainerParams =
-                new RelativeLayout.LayoutParams(700, 500);
+                new RelativeLayout.LayoutParams(710, 500);
 //        buttonsContainerParams.addRule();
         buttonsContainer.setLayoutParams(buttonsContainerParams);
         buttonsContainer.setBackgroundColor(Color.DKGRAY);
@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
         final Button leftBtn = new Button(this);
         leftBtn.setText("left");
+        leftBtn.setTextColor(Color.WHITE);
+
+        final int nesGreen = getResources().getColor(R.color.nesGreen);
+        leftBtn.setBackgroundColor(nesGreen);
         // green rgb(0, 204, 102)
         // light green rgb(204, 255, 230)
 
@@ -91,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                flashButton(leftBtn);
+                flashButton(leftBtn, Color.CYAN,
+                        nesGreen);
                 vibrate();
 
 
@@ -108,8 +113,12 @@ public class MainActivity extends AppCompatActivity {
 
         final Button upBtn = new Button(this);
         upBtn.setText("up");
+        upBtn.setTextColor(Color.WHITE);
+
         // blue rgb(0, 102, 255)
         // light blue rgb(204, 224, 255)
+        final int nesBlue = getResources().getColor(R.color.nesBlue);
+        upBtn.setBackgroundColor(nesBlue);
 
 
         RelativeLayout.LayoutParams btnTopRelativeParams = new RelativeLayout.LayoutParams(235, 235);
@@ -121,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                flashButton(upBtn);
+                flashButton(upBtn, Color.CYAN,
+                        nesBlue);
                 vibrate();
 
 
@@ -141,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
         final Button downBtn = new Button(this);
         downBtn.setText("down");
-        Color yellow = new Color();
+        downBtn.setTextColor(Color.WHITE);
+        final int yellowNesColour = getResources().getColor(R.color.nesYellow);
+        downBtn.setBackgroundColor(yellowNesColour);
 //        yellow.
 //        downBtn.setBackgroundColor(Color.R);
         // yellow rgb(255, 255, 0)
@@ -156,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                flashButton(downBtn);
+                flashButton(downBtn, Color.CYAN,
+                        yellowNesColour);
                 vibrate();
                 if(!game.getGameOver()){
                     game.setCurrentPlayerDirection("s");
@@ -177,7 +190,11 @@ public class MainActivity extends AppCompatActivity {
 
         final Button rightBtn = new Button(this);
         rightBtn.setText("right");
+        rightBtn.setTextColor(Color.WHITE);
+
         //red 255, 51, 0
+        final int redNesColour = getResources().getColor(R.color.nesRed);
+        rightBtn.setBackgroundColor(redNesColour);
         // light red (255, 214, 204)
 
 
@@ -189,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                flashButton(rightBtn);
+                flashButton(rightBtn,
+                        Color.CYAN, redNesColour);
                 vibrate();
 
                 if(!game.getGameOver()){
@@ -221,10 +239,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void flashButton(final Button button){
+    private void flashButton(final Button button, int flashColour, final int origialColour){
 
-
-        button.setBackgroundColor(Color.GREEN);
+        button.setBackgroundColor(flashColour);
 
         final Timer mTimer = new Timer();
 
@@ -234,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        button.setBackgroundColor(Color.LTGRAY);
+                        button.setBackgroundColor(origialColour);
                         mTimer.cancel();
                     }
                 });

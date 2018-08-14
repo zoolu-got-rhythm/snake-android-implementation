@@ -4,13 +4,17 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="nesBlue"> </color>
-    <color name="nesGreen"> </color>
-    <color name="nesYellow"> </color>
-    <color name="nesRed"> </color>
+    <color name="pink"> #ff00ff </color>
+    <color name="purple"> #ff99ff
+    </color>
 
-    <color name="nesLightBlue"> </color>
-    <color name="nesLightGreen"> </color>
-    <color name="nesLightYellow"> </color>
-    <color name="nesLightRed"> </color>
+    <color name="nesBlue"> #0066ff </color>
+    <color name="nesGreen"> #00cc66 </color>
+    <color name="nesYellow">#ffff00 </color>
+    <color name="nesRed"> #ff3300</color>
+
+    <color name="nesLightBlue"> #cce0ff</color>
+    <color name="nesLightGreen">#ccffe6</color>
+    <color name="nesLightYellow">#ffffcc</color>
+    <color name="nesLightRed">#ffd6cc</color>
 </resources>

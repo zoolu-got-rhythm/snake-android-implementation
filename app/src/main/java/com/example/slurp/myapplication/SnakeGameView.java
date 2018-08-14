@@ -28,14 +28,16 @@ public class SnakeGameView extends View implements Observer{
         this.width = width;
         this.height = height;
 
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(this.width + 30,
-                this.height + 30);
+
+
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(this.width + 36,
+                this.height + 36);
 
         this.setLayoutParams(layoutParams);
         this.setBackgroundColor(Color.BLACK);
 
         this.mPaint = new Paint();
-        this.mPaint.setColor(Color.GREEN);
+        this.mPaint.setColor(getResources().getColor(R.color.pink));
 //        this.mPaint.setStrokeWidth(16f);
 //        this.mPaint.setStyle(Paint.Style.STROKE);
 
@@ -60,10 +62,22 @@ public class SnakeGameView extends View implements Observer{
 
 
             for (Point p : this.currentGameState.getPlayerSnake().getHeadAndBody()) {
-                canvas.drawRect(new Rect(p.x * squareSize,
-                                p.y * squareSize, (p.x * squareSize) + squareSize,
-                                (p.y * squareSize) + squareSize),
-                        this.mPaint);
+
+                if(this.currentGameState.getPlayerSnake().getHeadAndBody().indexOf(p) == 0){
+                    Paint snakeHeadPaint = new Paint();
+                    snakeHeadPaint.setColor(getResources().getColor(R.color.purple));
+                    canvas.drawRect(new Rect(p.x * squareSize,
+                                    p.y * squareSize, (p.x * squareSize) + squareSize,
+                                    (p.y * squareSize) + squareSize),
+                            snakeHeadPaint);
+
+                }else{
+                    canvas.drawRect(new Rect(p.x * squareSize,
+                                    p.y * squareSize, (p.x * squareSize) + squareSize,
+                                    (p.y * squareSize) + squareSize),
+                            this.mPaint);
+                }
+
             }
 
         if(currentGameState.getGameOver()) {

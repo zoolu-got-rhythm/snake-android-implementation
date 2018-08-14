@@ -33,7 +33,7 @@ public class Game extends Observable{
 
         this.currentPlayerScore = 0;
 
-        this.board = new Board(30, 30);
+        this.board = new Board(25, 25);
         this.playerSnake = new Snake(10,
                 this.board.getxTiles() / 2, this.board.getyTiles() / 2);
 

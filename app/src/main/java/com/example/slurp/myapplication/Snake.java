@@ -13,10 +13,12 @@ import java.util.List;
 public class Snake {
     private List<Point> headAndBody;
     private int snakeJointsIncludingHead;
+    private int stepsUntilCanGrow;
 
     public Snake(int snakeJointsIncludingHead, int startX, int startY){
         this.snakeJointsIncludingHead = snakeJointsIncludingHead;
         this.headAndBody = new ArrayList<>();
+        this.stepsUntilCanGrow = 0;
 
         for(int i = 0; i < this.snakeJointsIncludingHead; i++){
             this.headAndBody.add(new Point(startX + i, startY));
@@ -26,7 +28,8 @@ public class Snake {
     public void grow(){
 //        Point tail = this.headAndBody.get(this.headAndBody.size() - 1);
 //        this.headAndBody.add(new Point(tail.x, tail.y));
-        snakeJointsIncludingHead += 1;
+        snakeJointsIncludingHead += 4;
+        this.stepsUntilCanGrow = snakeJointsIncludingHead - this.headAndBody.size();
     }
 
     public void move(String dir){
@@ -44,17 +47,32 @@ public class Snake {
         if(dir.equals("w"))
             directionX = -1;
 
+        // the order of the control flow from here and below in this method is important
+        Point tailToAddIfNeedsToGrow = null;
 
-        for(int i = snakeJointsIncludingHead - 1; i > 0; i--){
+        for(int i = headAndBody.size() - 1; i > 0; i--){
+
+            if(i == headAndBody.size() - 1){
+                tailToAddIfNeedsToGrow = new Point(headAndBody.get(i));
+            }
+
             Point newPosForJoint = headAndBody.get(i - 1);
+
             if(i < headAndBody.size()){
                 headAndBody.set(i, new Point(newPosForJoint.x, newPosForJoint.y));
-            }else{
-                headAndBody.add(i, new Point(newPosForJoint.x, newPosForJoint.y));
             }
         }
 
+        // append tail if snake is in process of growing by n squares
+        if(stepsUntilCanGrow > 0){
+            headAndBody.add(tailToAddIfNeedsToGrow);
+        }
+
         head.set(head.x + directionX, head.y + directionY);
+
+        if(this.stepsUntilCanGrow > 0){
+            this.stepsUntilCanGrow--;
+        }
     }
 
     public List<Point> getHeadAndBody() {
