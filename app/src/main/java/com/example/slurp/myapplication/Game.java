@@ -1,6 +1,7 @@
 package com.example.slurp.myapplication;
 
 import android.graphics.Point;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.Observable;
@@ -134,9 +135,38 @@ public class Game extends Observable{
         }
     }
 
+    @Nullable
+    private String oppositeDirectionOfDir(String dir){
+        String oppositeDir = null;
+        if(dir.equals("n"))
+            oppositeDir = "s";
+        if(dir.equals("e"))
+            oppositeDir = "w";
+        if(dir.equals("s"))
+            oppositeDir = "n";
+        if(dir.equals("w"))
+            oppositeDir = "e";
+        return oppositeDir;
+    }
+
+    private synchronized Boolean isDirectionAloud(String currentPlayerDirection){
+        if(this.playerDirectionsBuffer[1] != null)
+            if(oppositeDirectionOfDir(currentPlayerDirection).equals(playerDirectionsBuffer[1]))
+                return false;
+
+        if(this.playerDirectionsBuffer[0] != null)
+            if(oppositeDirectionOfDir(currentPlayerDirection).equals(playerDirectionsBuffer[0]))
+                return false;
+
+        return true;
+    }
+
     public synchronized void setCurrentPlayerDirection(String currentPlayerDirection) {
 //        this.currentPlayerDirection = currentPlayerDirection;
         // shift array to left
+
+        if(!isDirectionAloud(currentPlayerDirection))
+            return;
 
         if(this.bufferDirectionAtIndexZeroHasBeenUsed){
             this.playerDirectionsBuffer[0] = currentPlayerDirection;
