@@ -13,7 +13,7 @@ public class Game extends Observable{
     private String[] playerDirectionsBuffer;
     private Snake playerSnake;
     private Board board;
-    private Apple currentApple;
+    private volatile Apple currentApple;
     private Boolean isGameOver;
     private int currentPlayerScore;
     private Boolean bufferDirectionAtIndexZeroHasBeenUsed;
@@ -28,7 +28,6 @@ public class Game extends Observable{
 
     // init the game state
     public void initGame(){
-
         this.bufferDirectionAtIndexZeroHasBeenUsed = false;
         this.isGameOver = false;
 
@@ -43,6 +42,9 @@ public class Game extends Observable{
         );
 
         this.currentApple = new Apple(freePositionOnBoard.x, freePositionOnBoard.y);
+
+        if(snakeGameListener != null)
+            snakeGameListener.onAppleEaten(this.currentPlayerScore);
     }
 
     public void startGame(){
@@ -63,7 +65,7 @@ public class Game extends Observable{
                 notifyObservers(self);
 
             }
-        },1000, 1000 / 12);
+        },1000, 1000 / 6);
     }
 
     private synchronized void shiftBuffer(){
@@ -88,22 +90,34 @@ public class Game extends Observable{
 
             // check apple
             // .equals with some objects can mean the same reference of obj, not value equality
-            if(playerSnake.getHeadAndBody().get(0).x == this.currentApple.pos.x &&
-                    playerSnake.getHeadAndBody().get(0).y == this.currentApple.pos.y){
+            if(currentApple != null)
+                if(playerSnake.getHeadAndBody().get(0).x == this.currentApple.pos.x &&
+                        playerSnake.getHeadAndBody().get(0).y == this.currentApple.pos.y){
 
-                if(snakeGameListener != null)
-                    snakeGameListener.onAppleEaten();
+                    this.currentPlayerScore++;
 
-                this.currentPlayerScore++;
+                    if(snakeGameListener != null)
+                        snakeGameListener.onAppleEaten(this.currentPlayerScore);
 
-                playerSnake.grow();
-                Log.d("snake", "growing");
+                    playerSnake.grow();
+                    Log.d("snake", "growing");
 
-                Point freePositionOnBoard = Util.getRandomPositionThatDoesntCollideWithSnakeBody(
-                        this.playerSnake.getHeadAndBody(), this.board.getxTiles(), this.board.getyTiles()
-                );
-                this.currentApple = new Apple(freePositionOnBoard.x, freePositionOnBoard.y);
-            }
+                    // android environment doesn't seem to like the while loop when finding a free
+                    // random position on the game board for the apple, as it's unknown has long it will
+                    // take to find a space: so wrapped the code to run inside a thread to prevent crash
+                    new Thread(){
+                        @Override
+                        public void run(){
+                            Log.d("apple", "generating position for apple");
+                            currentApple = null;
+                            Point freePositionOnBoard = Util.getRandomPositionThatDoesntCollideWithSnakeBody(
+                                    playerSnake.getHeadAndBody(), board.getxTiles(), board.getyTiles()
+                            );
+                            currentApple = new Apple(freePositionOnBoard.x, freePositionOnBoard.y);
+                            Log.d("apple", "new apple assigned");
+                        }
+                    }.start();
+                }
 
             // check for out of bounds
             if(playerSnake.getHeadAndBody().get(0).x < 0 ||
@@ -132,6 +146,7 @@ public class Game extends Observable{
             // stop and clear timer
             this.timer.cancel();
             this.timer = null;
+            Log.d("timer", "canceling timer");
         }
     }
 

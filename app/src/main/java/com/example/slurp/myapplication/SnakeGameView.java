@@ -55,10 +55,14 @@ public class SnakeGameView extends View implements Observer{
 
             Paint redPaint = new Paint();
             redPaint.setColor(Color.RED);
-            Point apple = this.currentGameState.getCurrentApple().getPos();
-            canvas.drawRect(new Rect(apple.x * squareSize,
-                    apple.y * squareSize, (apple.x * squareSize) + squareSize,
-                    (apple.y * squareSize) + squareSize), redPaint);
+            Point apple = this.currentGameState.getCurrentApple() != null ?
+                    this.currentGameState.getCurrentApple().getPos() : null;
+
+
+            if(apple != null)
+                canvas.drawRect(new Rect(apple.x * squareSize,
+                        apple.y * squareSize, (apple.x * squareSize) + squareSize,
+                        (apple.y * squareSize) + squareSize), redPaint);
 
 
             for (Point p : this.currentGameState.getPlayerSnake().getHeadAndBody()) {
@@ -83,17 +87,36 @@ public class SnakeGameView extends View implements Observer{
         if(currentGameState.getGameOver()) {
 
             String gameOver = "GAME OVER";
+            String tapScreenToPlayAgain = "tap screen to play again";
 
             Paint gameOverPaint = new Paint();
             gameOverPaint.setTextSize(100f);
             gameOverPaint.setColor(Color.RED);
             gameOverPaint.setStyle(Paint.Style.FILL);
 
-            Rect result = new Rect();
+            Paint tapScreenPaint = new Paint();
+            tapScreenPaint.setTextSize(50f);
+            tapScreenPaint.setColor(Color.GREEN);
+            tapScreenPaint.setStyle(Paint.Style.FILL);
 
-            gameOverPaint.getTextBounds(gameOver, 0, gameOver.length(), result);
-            canvas.drawText(gameOver, (width / 2) - result.width() / 2,
-                    (height / 2) + result.height() / 2, gameOverPaint);
+            Rect resultGameOver = new Rect();
+            Rect resultTapScreenToPlayAgain = new Rect();
+
+
+            gameOverPaint.getTextBounds(gameOver, 0, gameOver.length(), resultGameOver);
+
+            tapScreenPaint.getTextBounds(tapScreenToPlayAgain, 0, tapScreenToPlayAgain.length(),
+                    resultTapScreenToPlayAgain);
+
+
+            canvas.drawText(gameOver, (width / 2) - resultGameOver.width() / 2,
+                    (height / 2) + resultGameOver.height() / 2, gameOverPaint);
+
+            canvas.drawText(tapScreenToPlayAgain, (width / 2) - resultTapScreenToPlayAgain.width() / 2,
+                    ((height / 2) + resultTapScreenToPlayAgain.height() / 2)
+                    + resultGameOver.height(), tapScreenPaint);
+
+
         }
 
 

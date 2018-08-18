@@ -4,6 +4,7 @@ import android.graphics.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 // there's many different ways and coupling to design snake.
@@ -17,7 +18,7 @@ public class Snake {
 
     public Snake(int snakeJointsIncludingHead, int startX, int startY){
         this.snakeJointsIncludingHead = snakeJointsIncludingHead;
-        this.headAndBody = new ArrayList<>();
+        this.headAndBody = new CopyOnWriteArrayList<>();
         this.stepsUntilCanGrow = 0;
 
         for(int i = 0; i < this.snakeJointsIncludingHead; i++){

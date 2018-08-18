@@ -24,13 +24,16 @@ public class ScoreTextView extends android.support.v7.widget.AppCompatTextView i
     @Override
     public void update(Observable observable, Object o) {
         this.game = (Game) observable;
+
+    }
+
+    public void updateScore(final int score){
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                setText("score: " + Integer.toString(game.getCurrentPlayerScore()));
+                setText("apples: " + Integer.toString(score));
                 invalidate();
             }
         });
-
     }
 }

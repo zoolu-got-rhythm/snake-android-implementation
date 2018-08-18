@@ -32,13 +32,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.mHandler = new Handler();
+        final ScoreTextView mScoreTextView = new ScoreTextView(this);
 
 
         this.game = new Game();
         this.game.setSnakeGameListener(new SnakeGameListener() {
             @Override
-            public void onAppleEaten() {
+            public void onAppleEaten(int score) {
                 new PlaySoundThread(getApplicationContext(),  R.raw.power_up, 0.2f).run();
+                mScoreTextView.updateScore(score);
+
             }
 
             @Override
@@ -50,14 +53,24 @@ public class MainActivity extends AppCompatActivity {
         View snakeGameView = new SnakeGameView(this, 900, 900);
         game.addObserver((Observer) snakeGameView);
 
+        snakeGameView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(game.getGameOver()) {
+                    game.initGame();
+                    game.setCurrentPlayerDirection("w");
+                    game.startGame();
+                }
+            }
+        });
+
 
 
         LinearLayout root = findViewById(R.id.root);
         root.setGravity(Gravity.CENTER);
 
-        ScoreTextView mScoreTextView = new ScoreTextView(this);
         mScoreTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        game.addObserver(mScoreTextView);
+//        game.addObserver(mScoreTextView);
         root.addView(mScoreTextView);
 
 
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         // light green rgb(204, 255, 230)
 
 
-        RelativeLayout.LayoutParams btnLeftRelativeParams = new RelativeLayout.LayoutParams(235, 235);
+        RelativeLayout.LayoutParams btnLeftRelativeParams = new RelativeLayout.LayoutParams(235, 250);
         btnLeftRelativeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         btnLeftRelativeParams.addRule(RelativeLayout.CENTER_VERTICAL);
         leftBtn.setLayoutParams(btnLeftRelativeParams);
@@ -99,14 +112,9 @@ public class MainActivity extends AppCompatActivity {
                         nesGreen);
                 vibrate();
 
+                if(!game.getGameOver())
+                    game.setCurrentPlayerDirection("w");
 
-                if(!game.getGameOver()){
-                    game.setCurrentPlayerDirection("w");
-                }else{
-                    game.initGame();
-                    game.setCurrentPlayerDirection("w");
-                    game.startGame();
-                }
             }
         });
 
@@ -121,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         upBtn.setBackgroundColor(nesBlue);
 
 
-        RelativeLayout.LayoutParams btnTopRelativeParams = new RelativeLayout.LayoutParams(235, 235);
+        RelativeLayout.LayoutParams btnTopRelativeParams = new RelativeLayout.LayoutParams(235, 250);
         btnTopRelativeParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         btnTopRelativeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         upBtn.setLayoutParams(btnTopRelativeParams);
@@ -135,13 +143,9 @@ public class MainActivity extends AppCompatActivity {
                 vibrate();
 
 
-                if(!game.getGameOver()){
+                if(!game.getGameOver())
                     game.setCurrentPlayerDirection("n");
-                }else{
-                    game.initGame();
-                    game.setCurrentPlayerDirection("w");
-                    game.startGame();
-                }
+
 
             }
         });
@@ -159,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         // yellow rgb(255, 255, 0)
         // light yellow rgb(255, 255, 204)
 
-        RelativeLayout.LayoutParams btnDownRelativeParams = new RelativeLayout.LayoutParams(235, 235);
+        RelativeLayout.LayoutParams btnDownRelativeParams = new RelativeLayout.LayoutParams(235, 250);
         btnDownRelativeParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         btnDownRelativeParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         downBtn.setLayoutParams(btnDownRelativeParams);
@@ -171,13 +175,9 @@ public class MainActivity extends AppCompatActivity {
                 flashButton(downBtn, Color.CYAN,
                         yellowNesColour);
                 vibrate();
-                if(!game.getGameOver()){
+                if(!game.getGameOver())
                     game.setCurrentPlayerDirection("s");
-                }else{
-                    game.initGame();
-                    game.setCurrentPlayerDirection("w");
-                    game.startGame();
-                }
+
 
             }
         });
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         // light red (255, 214, 204)
 
 
-        RelativeLayout.LayoutParams btnRightRelativeParams = new RelativeLayout.LayoutParams(235, 235);
+        RelativeLayout.LayoutParams btnRightRelativeParams = new RelativeLayout.LayoutParams(235, 250);
         btnRightRelativeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         btnRightRelativeParams.addRule(RelativeLayout.CENTER_VERTICAL);
         rightBtn.setLayoutParams(btnRightRelativeParams);
@@ -210,13 +210,9 @@ public class MainActivity extends AppCompatActivity {
                         Color.CYAN, redNesColour);
                 vibrate();
 
-                if(!game.getGameOver()){
+                if(!game.getGameOver())
                     game.setCurrentPlayerDirection("e");
-                }else{
-                    game.initGame();
-                    game.setCurrentPlayerDirection("w");
-                    game.startGame();
-                }
+
             }
         });
 

@@ -8,15 +8,15 @@ public class Util {
     public static Point getRandomPositionThatDoesntCollideWithSnakeBody(List<Point> snakeBody, int maxX, int maxY){
 
         int x = (int) Math.floor(Math.random() * maxX);
-        int y = (int) Math.floor(Math.random() * maxX);
+        int y = (int) Math.floor(Math.random() * maxY);
 
         Boolean foundSpaceOnGridThatDoesntCollideWithSnakeBody = false;
         while(!foundSpaceOnGridThatDoesntCollideWithSnakeBody){
             foundSpaceOnGridThatDoesntCollideWithSnakeBody = true;
             for(Point p : snakeBody){
-                if(x == p.x || y == p.y){
+                if(x == p.x && y == p.y){
                     x = (int) Math.floor(Math.random() * maxX);
-                    y = (int) Math.floor(Math.random() * maxX);
+                    y = (int) Math.floor(Math.random() * maxY);
                     foundSpaceOnGridThatDoesntCollideWithSnakeBody = false;
                     break;
                 }
