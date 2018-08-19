@@ -1,5 +1,6 @@
 package com.example.slurp.myapplication;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -34,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
         this.mHandler = new Handler();
         final ScoreTextView mScoreTextView = new ScoreTextView(this);
 
+        Bundle recievedIntentFromMenu = getIntent().getExtras();
 
-        this.game = new Game();
+
+        this.game = new Game(recievedIntentFromMenu.getInt(MenuActivity.DIFFICULTY_MODE));
         this.game.setSnakeGameListener(new SnakeGameListener() {
             @Override
             public void onAppleEaten(int score) {
@@ -64,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         LinearLayout root = findViewById(R.id.root);
         root.setGravity(Gravity.CENTER);
 
@@ -73,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
 //        game.addObserver(mScoreTextView);
         root.addView(mScoreTextView);
 
-
         root.addView(snakeGameView);
-
 
         RelativeLayout buttonsContainer = new RelativeLayout(this);
 
@@ -142,11 +141,8 @@ public class MainActivity extends AppCompatActivity {
                         nesBlue);
                 vibrate();
 
-
                 if(!game.getGameOver())
                     game.setCurrentPlayerDirection("n");
-
-
             }
         });
 
@@ -177,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
                 vibrate();
                 if(!game.getGameOver())
                     game.setCurrentPlayerDirection("s");
-
-
             }
         });
 

@@ -17,12 +17,14 @@ public class Game extends Observable{
     private Boolean isGameOver;
     private int currentPlayerScore;
     private Boolean bufferDirectionAtIndexZeroHasBeenUsed;
+    private int framerate;
 
     private Timer timer;
 
     private SnakeGameListener snakeGameListener;
 
-    public Game(){
+    public Game(int framerate){
+        this.framerate = framerate;
         this.playerDirectionsBuffer = new String[2];
     }
 
@@ -30,6 +32,9 @@ public class Game extends Observable{
     public void initGame(){
         this.bufferDirectionAtIndexZeroHasBeenUsed = false;
         this.isGameOver = false;
+
+        this.playerDirectionsBuffer[0] = null;
+        this.playerDirectionsBuffer[1] = null;
 
         this.currentPlayerScore = 0;
 
@@ -65,7 +70,7 @@ public class Game extends Observable{
                 notifyObservers(self);
 
             }
-        },1000, 1000 / 6);
+        },1000, 1000 / this.framerate);
     }
 
     private synchronized void shiftBuffer(){
