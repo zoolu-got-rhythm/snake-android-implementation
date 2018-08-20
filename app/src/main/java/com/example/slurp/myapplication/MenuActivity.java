@@ -3,6 +3,7 @@ package com.example.slurp.myapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MenuActivity extends AppCompatActivity {
 
     public final static String DIFFICULTY_MODE = "DIFFICULTY_MODE";
+    private final String[] directions = {"n", "e", "s", "w"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +33,54 @@ public class MenuActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         root.setOrientation(LinearLayout.VERTICAL);
         root.setGravity(Gravity.CENTER);
+
+
+
+        final Game game = new Game(16);
+        SnakeGameView snakeGameView = new SnakeGameView(this, 800, 800);
+        game.addObserver(snakeGameView);
+        game.initGame();
+        game.setCurrentPlayerDirection("s");
+        game.startGame();
+
+        game.setAiListener(new AiListener() {
+            @Override
+            public void onIs1MoveAwayFromEdge(List<String> forbiddenDirections) {
+                Log.d("edge", "1 move away from edge");
+                String currentDirection = game.getCurrentPlayerDirection();
+
+                Boolean isNotUniqueDirection = true;
+                String newDir = null;
+                while(isNotUniqueDirection){
+                    newDir = directions[(int) Math.floor(Math.random() * directions.length)];
+                    for (String forbiddenDir : forbiddenDirections) {
+                        if (!newDir.equals(forbiddenDir)) {
+                            if(!newDir.equals(currentDirection) &&
+                                    !newDir.equals(game.oppositeDirectionOfDir(currentDirection))) {
+                                isNotUniqueDirection = false;
+                            }else{
+                                continue;
+                            }
+                        }else{
+                            continue;
+                        }
+                    }
+                }
+                game.setCurrentPlayerDirection(newDir);
+            }
+        });
+
+
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                String newDir = directions[(int) Math.floor(Math.random() * directions.length)];
+//                game.setCurrentPlayerDirection(newDir);
+//            }
+//        }, 0, 800);
+
+        root.addView(snakeGameView);
 
         setContentView(root);
 

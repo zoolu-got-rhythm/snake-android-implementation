@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private Game game;
     private Handler mHandler;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!game.getGameOver())
                     game.setCurrentPlayerDirection("w");
-
             }
         });
 
