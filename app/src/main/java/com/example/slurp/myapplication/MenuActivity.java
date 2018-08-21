@@ -36,7 +36,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
 
-        final Game game = new Game(16);
+        final Game game = new Game(25);
         SnakeGameView snakeGameView = new SnakeGameView(this, 800, 800);
         game.addObserver(snakeGameView);
         game.initGame();
@@ -55,17 +55,16 @@ public class MenuActivity extends AppCompatActivity {
                     newDir = directions[(int) Math.floor(Math.random() * directions.length)];
                     for (String forbiddenDir : forbiddenDirections) {
                         if (!newDir.equals(forbiddenDir)) {
-                            if(!newDir.equals(currentDirection) &&
-                                    !newDir.equals(game.oppositeDirectionOfDir(currentDirection))) {
-                                isNotUniqueDirection = false;
-                            }else{
-                                continue;
-                            }
+                            isNotUniqueDirection = false;
                         }else{
-                            continue;
+                            isNotUniqueDirection = true;
+                            break;
                         }
                     }
                 }
+
+                Log.d("allowed dir", newDir);
+
                 game.setCurrentPlayerDirection(newDir);
             }
         });

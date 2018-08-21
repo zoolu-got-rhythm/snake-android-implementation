@@ -143,56 +143,6 @@ public class Game extends Observable{
                 return;
             }
 
-            // check if snake at edge
-            // wrap into a private method
-            if(this.aiListener != null) {
-
-                List<String> foundDisallowedDirections = new ArrayList<>();
-
-                if (playerSnake.getHeadAndBody().get(0).x <= 0 ||
-                        playerSnake.getHeadAndBody().get(0).x >= this.board.xTiles ||
-                        playerSnake.getHeadAndBody().get(0).y <= 0 ||
-                        playerSnake.getHeadAndBody().get(0).y >= this.board.yTiles) {
-
-                    Map<String, Point> dirs = new HashMap<>();
-                    dirs.put("n", new Point(0, -1));
-                    dirs.put("e", new Point(1, 0));
-                    dirs.put("s", new Point(0, 1));
-                    dirs.put("w", new Point(-1, 0));
-
-                    Iterator it = dirs.entrySet().iterator();
-                    while(it.hasNext()){
-                        Point snakeHeadCopy = new Point(playerSnake.getHeadAndBody().get(0));
-                        Map.Entry<String, Point> pair = (Map.Entry) it.next();
-
-                        snakeHeadCopy.offset(pair.getValue().x, pair.getValue().y);
-                        if (snakeHeadCopy.x < 0 ||
-                                snakeHeadCopy.x > this.board.xTiles ||
-                                snakeHeadCopy.y < 0 ||
-                                snakeHeadCopy.y > this.board.yTiles) {
-                            foundDisallowedDirections.add(pair.getKey());
-                        }
-
-                        for(int j = 1; j < playerSnake.getHeadAndBody().size(); j++){
-                            Point joint = playerSnake.getHeadAndBody().get(j);
-                            if((snakeHeadCopy.x == joint.x &&
-                                    snakeHeadCopy.y == joint.y)){
-                                if(foundDisallowedDirections.indexOf(pair.getKey()) != -1)
-                                    foundDisallowedDirections.add(pair.getKey());
-                            }
-                        }
-
-
-                            // add to arrayList
-                    }
-
-                    Log.d("disallowed dirs", foundDisallowedDirections.toString());
-
-                    this.aiListener.onIs1MoveAwayFromEdge(foundDisallowedDirections);
-//                    return;
-                }
-            }
-
 
             // check for snake hitting own body
             for(int i = 1; i < playerSnake.getHeadAndBody().size(); i++){
