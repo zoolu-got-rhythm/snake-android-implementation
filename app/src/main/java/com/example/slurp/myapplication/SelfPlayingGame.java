@@ -11,14 +11,21 @@ import java.util.Map;
 
 public class SelfPlayingGame extends Game{
 
-    public SelfPlayingGame(int framerate) {
-        super(framerate);
+    private String currentLegalDirection;
+
+    public SelfPlayingGame(int framerate, int snakeLength, int gridSize) {
+        super(framerate, snakeLength, gridSize);
+
+//        super.getCurrentApple().
+        // set current apple = null
     }
 
     @Override
     public void update(){
-        String legalDirection = generateLegalDirection();
-        super.getPlayerSnake().move(legalDirection);
+        this.currentLegalDirection = generateLegalDirection();
+        super.getPlayerSnake().move(
+                this.currentLegalDirection != null ? currentLegalDirection : "w");
+        super.setCurrentApple(null);
     }
 
     private String generateLegalDirection(){
@@ -27,45 +34,42 @@ public class SelfPlayingGame extends Game{
 
             List<String> foundDisallowedDirections = new ArrayList<>();
 
+            Map<String, Point> dirs = new HashMap<>();
+            dirs.put("n", new Point(0, -1));
+            dirs.put("e", new Point(1, 0));
+            dirs.put("s", new Point(0, 1));
+            dirs.put("w", new Point(-1, 0));
 
-                Map<String, Point> dirs = new HashMap<>();
-                dirs.put("n", new Point(0, -1));
-                dirs.put("e", new Point(1, 0));
-                dirs.put("s", new Point(0, 1));
-                dirs.put("w", new Point(-1, 0));
+            Iterator it = dirs.entrySet().iterator();
+            while(it.hasNext()){
+                Point snakeHeadCopy = new Point(super.getPlayerSnake().getHeadAndBody().get(0));
+                Map.Entry<String, Point> pair = (Map.Entry) it.next();
 
-                Iterator it = dirs.entrySet().iterator();
-                while(it.hasNext()){
-                    Point snakeHeadCopy = new Point(super.getPlayerSnake().getHeadAndBody().get(0));
-                    Map.Entry<String, Point> pair = (Map.Entry) it.next();
+                snakeHeadCopy.offset(pair.getValue().x, pair.getValue().y);
 
-                    snakeHeadCopy.offset(pair.getValue().x, pair.getValue().y);
-
-                    // check if out of bounds
-                    if (snakeHeadCopy.x < 0 ||
-                            snakeHeadCopy.x > super.getBoard().xTiles ||
-                            snakeHeadCopy.y < 0 ||
-                            snakeHeadCopy.y > super.getBoard().yTiles) {
-                        foundDisallowedDirections.add(pair.getKey());
-                    }
-
-                    // check if snake hits self/body
-                    for(int j = 1; j < super.getPlayerSnake().getHeadAndBody().size(); j++){
-                        Point joint = super.getPlayerSnake().getHeadAndBody().get(j);
-                        if((snakeHeadCopy.x == joint.x &&
-                                snakeHeadCopy.y == joint.y)){
-                            if(foundDisallowedDirections.indexOf(pair.getKey()) == -1)
-                                foundDisallowedDirections.add(pair.getKey());
-                        }
-                    }
-                    // add to arrayList
+                // check if out of bounds
+                if (snakeHeadCopy.x < 0 ||
+                        snakeHeadCopy.x > super.getBoard().xTiles ||
+                        snakeHeadCopy.y < 0 ||
+                        snakeHeadCopy.y > super.getBoard().yTiles) {
+                    foundDisallowedDirections.add(pair.getKey());
                 }
 
-                Log.d("disallowed dirs", foundDisallowedDirections.toString());
+                // check if snake hits self/body
+                for(int j = 1; j < super.getPlayerSnake().getHeadAndBody().size(); j++){
+                    Point joint = super.getPlayerSnake().getHeadAndBody().get(j);
+                    if((snakeHeadCopy.x == joint.x &&
+                            snakeHeadCopy.y == joint.y)){
+                        if(foundDisallowedDirections.indexOf(pair.getKey()) == -1)
+                            foundDisallowedDirections.add(pair.getKey());
+                    }
+                }
+                // add to arrayList
+            }
+
 
 //                this.aiListener.onIs1MoveAwayFromEdge(foundDisallowedDirections);
 //                    return;
-
 
         // wrap into a smaller testable function
         List<String> allowedDirections = new ArrayList<>();
@@ -84,6 +88,7 @@ public class SelfPlayingGame extends Game{
             }
         }
 
+        Log.d("allowed dirs", allowedDirections.toString());
 
         return allowedDirections.get(
                 (int) Math.floor(Math.random() * allowedDirections.size())

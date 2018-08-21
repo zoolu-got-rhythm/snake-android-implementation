@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 // could do tight couples or can do the game class controls the other classes without them
 // knowing about each other abit, abit like inversion of control
 
-public class Snake {
+public class Snake implements Cloneable{
     private List<Point> headAndBody;
     private int snakeJointsIncludingHead;
     private int stepsUntilCanGrow;
@@ -74,6 +74,17 @@ public class Snake {
         if(this.stepsUntilCanGrow > 0){
             this.stepsUntilCanGrow--;
         }
+    }
+
+    @Override
+    public Object clone() {
+        Snake obj = null;
+        try {
+            obj = (Snake) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return obj;
     }
 
     public List<Point> getHeadAndBody() {

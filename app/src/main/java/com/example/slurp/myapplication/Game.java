@@ -23,14 +23,18 @@ public class Game extends Observable{
     private int currentPlayerScore;
     private Boolean bufferDirectionAtIndexZeroHasBeenUsed;
     private int framerate;
+    private int snakeLength;
+    private int gridSize;
 
     private Timer timer;
 
     private SnakeGameListener snakeGameListener;
     private AiListener aiListener;
 
-    public Game(int framerate){
+    public Game(int framerate, int snakeLength, int gridSize){
         this.framerate = framerate;
+        this.snakeLength = snakeLength;
+        this.gridSize = gridSize;
         this.playerDirectionsBuffer = new String[2];
     }
 
@@ -44,8 +48,8 @@ public class Game extends Observable{
 
         this.currentPlayerScore = 0;
 
-        this.board = new Board(25, 25);
-        this.playerSnake = new Snake(10,
+        this.board = new Board(this.gridSize, this.gridSize);
+        this.playerSnake = new Snake(this.snakeLength,
                 this.board.getxTiles() / 2, this.board.getyTiles() / 2);
 
         Point freePositionOnBoard = Util.getRandomPositionThatDoesntCollideWithSnakeBody(
@@ -250,5 +254,9 @@ public class Game extends Observable{
 
     public void setAiListener(com.example.slurp.myapplication.AiListener aiListener) {
         this.aiListener = aiListener;
+    }
+
+    public void setCurrentApple(Apple currentApple) {
+        this.currentApple = currentApple;
     }
 }

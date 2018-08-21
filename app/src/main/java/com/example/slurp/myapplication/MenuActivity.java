@@ -36,39 +36,12 @@ public class MenuActivity extends AppCompatActivity {
 
 
 
-        final Game game = new Game(25);
-        SnakeGameView snakeGameView = new SnakeGameView(this, 800, 800);
+        final Game game = new SelfPlayingGame(10, 4, 10);
+        SnakeGameView snakeGameView = new SnakeGameView(this, 300, 300);
         game.addObserver(snakeGameView);
         game.initGame();
-        game.setCurrentPlayerDirection("s");
+//        game.setCurrentPlayerDirection("s");
         game.startGame();
-
-        game.setAiListener(new AiListener() {
-            @Override
-            public void onIs1MoveAwayFromEdge(List<String> forbiddenDirections) {
-                Log.d("edge", "1 move away from edge");
-                String currentDirection = game.getCurrentPlayerDirection();
-
-                Boolean isNotUniqueDirection = true;
-                String newDir = null;
-                while(isNotUniqueDirection){
-                    newDir = directions[(int) Math.floor(Math.random() * directions.length)];
-                    for (String forbiddenDir : forbiddenDirections) {
-                        if (!newDir.equals(forbiddenDir)) {
-                            isNotUniqueDirection = false;
-                        }else{
-                            isNotUniqueDirection = true;
-                            break;
-                        }
-                    }
-                }
-
-                Log.d("allowed dir", newDir);
-
-                game.setCurrentPlayerDirection(newDir);
-            }
-        });
-
 
 //        Timer timer = new Timer();
 //        timer.scheduleAtFixedRate(new TimerTask() {
