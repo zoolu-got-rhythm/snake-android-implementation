@@ -36,8 +36,8 @@ public class MenuActivity extends AppCompatActivity {
 
 
 
-        final Game game = new SelfPlayingGame(2, 4, 10);
-        SnakeGameView snakeGameView = new SnakeGameView(this, 300, 300);
+        final Game game = new SelfPlayingGame(10, 4, 10);
+        SnakeGameView snakeGameView = new SnakeGameView(this, 345, 345);
         game.addObserver(snakeGameView);
         game.initGame();
 //        game.setCurrentPlayerDirection("s");

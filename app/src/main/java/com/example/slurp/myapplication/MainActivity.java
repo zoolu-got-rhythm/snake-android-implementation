@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         this.game = new Game(recievedIntentFromMenu.getInt(MenuActivity.DIFFICULTY_MODE),
-                10, 25);
+                4, 25);
         this.game.setSnakeGameListener(new SnakeGameListener() {
             @Override
             public void onAppleEaten(int score) {

@@ -2,6 +2,8 @@ package com.example.slurp.myapplication;
 
 import android.graphics.Point;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -78,13 +80,15 @@ public class Snake implements Cloneable{
 
     @Override
     public Object clone() {
-        Snake obj = null;
-        try {
-            obj = (Snake) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return obj;
+//        Snake obj = null;
+//        try {
+//            obj = (Snake) super.clone();
+//        } catch (CloneNotSupportedException e) {
+//            e.printStackTrace();
+//        }
+//        return obj;
+        Gson gson = new Gson();
+        return gson.fromJson(gson.toJson(this), Snake.class);
     }
 
     public List<Point> getHeadAndBody() {
