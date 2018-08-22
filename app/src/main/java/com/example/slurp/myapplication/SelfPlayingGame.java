@@ -23,8 +23,11 @@ public class SelfPlayingGame extends Game{
     @Override
     public void update(){
         this.currentLegalDirection = generateLegalDirection();
+        Log.d("chosen dir", currentLegalDirection);
+
         super.getPlayerSnake().move(
                 this.currentLegalDirection != null ? currentLegalDirection : "w");
+
         super.setCurrentApple(null);
     }
 
@@ -42,10 +45,12 @@ public class SelfPlayingGame extends Game{
 
             Iterator it = dirs.entrySet().iterator();
             while(it.hasNext()){
-                Point snakeHeadCopy = new Point(super.getPlayerSnake().getHeadAndBody().get(0));
                 Map.Entry<String, Point> pair = (Map.Entry) it.next();
 
-                snakeHeadCopy.offset(pair.getValue().x, pair.getValue().y);
+                Snake snakeDeepCopy = (Snake) super.getPlayerSnake().clone();
+                snakeDeepCopy.move(pair.getKey());
+
+                Point snakeHeadCopy = new Point(snakeDeepCopy.getHeadAndBody().get(0));
 
                 // check if out of bounds
                 if (snakeHeadCopy.x < 0 ||
@@ -56,8 +61,8 @@ public class SelfPlayingGame extends Game{
                 }
 
                 // check if snake hits self/body
-                for(int j = 1; j < super.getPlayerSnake().getHeadAndBody().size(); j++){
-                    Point joint = super.getPlayerSnake().getHeadAndBody().get(j);
+                for(int j = 1; j < snakeDeepCopy.getHeadAndBody().size(); j++){
+                    Point joint = snakeDeepCopy.getHeadAndBody().get(j);
                     if((snakeHeadCopy.x == joint.x &&
                             snakeHeadCopy.y == joint.y)){
                         if(foundDisallowedDirections.indexOf(pair.getKey()) == -1)
@@ -66,8 +71,6 @@ public class SelfPlayingGame extends Game{
                 }
                 // add to arrayList
             }
-
-
 //                this.aiListener.onIs1MoveAwayFromEdge(foundDisallowedDirections);
 //                    return;
 

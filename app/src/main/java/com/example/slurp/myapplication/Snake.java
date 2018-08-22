@@ -69,7 +69,7 @@ public class Snake implements Cloneable{
             headAndBody.add(tailToAddIfNeedsToGrow);
         }
 
-        head.set(head.x + directionX, head.y + directionY);
+        head.offset(directionX, directionY);
 
         if(this.stepsUntilCanGrow > 0){
             this.stepsUntilCanGrow--;
