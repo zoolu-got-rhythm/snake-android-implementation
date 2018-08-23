@@ -1,6 +1,8 @@
 package com.example.slurp.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -25,6 +27,12 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private Game game;
     private Handler mHandler;
+    private final String SHARED_PREF_HIGH_SCORE_FILE_KEY = "SHARED_PREF_HIGH_SCORE_FILE_KEY";
+
+    private final String SHARED_PREF_HIGH_SCORE_KEY_ONE_THUMB = "SHARED_PREF_HIGH_SCORE_KEY_ONE_THUMB";
+    private final String SHARED_PREF_HIGH_SCORE_KEY_TWO_THUMBS = "SHARED_PREF_HIGH_SCORE_KEY_TWO_THUMBS";
+
+    private String highScoreKeyForCurrentGameMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +40,60 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.mHandler = new Handler();
-        final ScoreTextView mScoreTextView = new ScoreTextView(this);
+        final ScoreTextView mScoreTextView = new ScoreTextView(this, "score",
+                RelativeLayout.ALIGN_PARENT_LEFT);
+        final ScoreTextView mHighScoreTextView = new ScoreTextView(this, "high score",
+                RelativeLayout.ALIGN_PARENT_RIGHT);
 
         Bundle recievedIntentFromMenu = getIntent().getExtras();
+        int difficultyMode = recievedIntentFromMenu.getInt(MenuActivity.DIFFICULTY_MODE);
 
 
-        this.game = new Game(recievedIntentFromMenu.getInt(MenuActivity.DIFFICULTY_MODE),
+        // wrap into method
+//        Context context = getActivity();
+        SharedPreferences sharedPref = this.getSharedPreferences(
+                SHARED_PREF_HIGH_SCORE_FILE_KEY, Context.MODE_PRIVATE);
+
+        if(difficultyMode == 6){
+            highScoreKeyForCurrentGameMode = SHARED_PREF_HIGH_SCORE_KEY_ONE_THUMB;
+        }
+
+        if(difficultyMode == 12){
+           highScoreKeyForCurrentGameMode = SHARED_PREF_HIGH_SCORE_KEY_TWO_THUMBS;
+        }
+
+        int highScore = sharedPref.getInt(this.highScoreKeyForCurrentGameMode, 0);
+        mHighScoreTextView.updateScore(highScore);
+
+
+        this.game = new Game(difficultyMode,
                 4, 25);
         this.game.setSnakeGameListener(new SnakeGameListener() {
             @Override
             public void onAppleEaten(int score) {
                 new PlaySoundThread(getApplicationContext(),  R.raw.power_up, 0.4f).run();
                 mScoreTextView.updateScore(score);
-
             }
 
             @Override
             public void onGameOver() {
                 new PlaySoundThread(getApplicationContext(),  R.raw.game_over, 0.4f).run();
+
+                // if new high score is greater than update view in memory and save high score
+                // to be read from sharePreferences file for next time the activity/game mode is open
+                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(
+                        SHARED_PREF_HIGH_SCORE_FILE_KEY, Context.MODE_PRIVATE);
+
+                if(sharedPref.getInt(highScoreKeyForCurrentGameMode, 0) <
+                        game.getCurrentPlayerScore()){
+
+                    int newHighScore = game.getCurrentPlayerScore();
+                    mHighScoreTextView.updateScore(newHighScore);
+
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putInt(highScoreKeyForCurrentGameMode, newHighScore);
+                    editor.apply(); // asyncrhonous write/update of sharedPrefs file
+                }
             }
         });
 
@@ -70,9 +114,21 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout root = findViewById(R.id.root);
         root.setGravity(Gravity.CENTER);
 
-        mScoreTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
 //        game.addObserver(mScoreTextView);
-        root.addView(mScoreTextView);
+
+
+        RelativeLayout scoresRelativeLayout = new RelativeLayout(this);
+        scoresRelativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(935,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+//        scoresRelativeLayout.setOrientation(RelativeLayout.HORIZONTAL);
+//        scoresRelativeLayout.setBackgroundColor(Color.GREEN);
+
+        scoresRelativeLayout.addView(mScoreTextView);
+        scoresRelativeLayout.addView(mHighScoreTextView);
+
+        root.addView(scoresRelativeLayout);
+
 
         root.addView(snakeGameView);
 

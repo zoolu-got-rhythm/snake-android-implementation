@@ -75,7 +75,7 @@ public class MenuActivity extends AppCompatActivity {
         root.addView(mTv1);
 
         Button easyBtn = new Button(this);
-        easyBtn.setText("easy");
+        easyBtn.setText("one thumb");
         easyBtn.setBackgroundColor(getResources().getColor(R.color.purple));
         easyBtn.setTextColor(Color.WHITE);
         root.addView(easyBtn);
@@ -90,10 +90,11 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+//        easyBtn.setPadding(0, 50, 0, 50);
 
 
         Button hardBtn = new Button(this);
-        hardBtn.setText("hard");
+        hardBtn.setText("two thumbs");
         hardBtn.setBackgroundColor(getResources().getColor(R.color.pink));
         hardBtn.setTextColor(Color.WHITE);
         root.addView(hardBtn);

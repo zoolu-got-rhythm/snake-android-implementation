@@ -1,7 +1,10 @@
 package com.example.slurp.myapplication;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Observable;
@@ -11,13 +14,21 @@ public class ScoreTextView extends android.support.v7.widget.AppCompatTextView i
 
     private Game game;
     private Handler mHandler;
+    private String scorePrefix;
 
-    public ScoreTextView(Context context) {
+    public ScoreTextView(Context context, String scorePrefix, int relativeLayoutChildAlignment) {
         super(context);
+        this.scorePrefix = scorePrefix;
         this.mHandler = new Handler();
 
-        this.setTextSize(20f);
-        this.setText("score: 0");
+        this.setTextSize(13f);
+        this.setText(scorePrefix +" 0");
+        this.setBackgroundColor(Color.GREEN);
+        RelativeLayout.LayoutParams paramsrl1 = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        paramsrl1.addRule(relativeLayoutChildAlignment);
+        this.setLayoutParams(paramsrl1);
+        this.setPadding(13, 0, 13, 0);
     }
 
 
@@ -31,7 +42,7 @@ public class ScoreTextView extends android.support.v7.widget.AppCompatTextView i
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                setText("score: " + Integer.toString(score));
+                setText(scorePrefix + " " + Integer.toString(score));
                 invalidate();
             }
         });
