@@ -15,15 +15,17 @@ public class ScoreTextView extends android.support.v7.widget.AppCompatTextView i
     private Game game;
     private Handler mHandler;
     private String scorePrefix;
+    private int colour;
 
-    public ScoreTextView(Context context, String scorePrefix, int relativeLayoutChildAlignment) {
+    public ScoreTextView(Context context, String scorePrefix, int relativeLayoutChildAlignment, int colour) {
         super(context);
         this.scorePrefix = scorePrefix;
+        this.colour = colour;
         this.mHandler = new Handler();
 
         this.setTextSize(13f);
         this.setText(scorePrefix +" 0");
-        this.setBackgroundColor(Color.GREEN);
+        this.setBackgroundColor(this.colour);
         RelativeLayout.LayoutParams paramsrl1 = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         paramsrl1.addRule(relativeLayoutChildAlignment);
@@ -42,7 +44,7 @@ public class ScoreTextView extends android.support.v7.widget.AppCompatTextView i
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                setText(scorePrefix + " " + Integer.toString(score));
+                setText((scorePrefix + " " + Integer.toString(score)).toUpperCase());
                 invalidate();
             }
         });

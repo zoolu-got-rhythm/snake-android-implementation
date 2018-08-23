@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         this.mHandler = new Handler();
         final ScoreTextView mScoreTextView = new ScoreTextView(this, "score",
-                RelativeLayout.ALIGN_PARENT_LEFT);
+                RelativeLayout.ALIGN_PARENT_LEFT, Color.CYAN);
         final ScoreTextView mHighScoreTextView = new ScoreTextView(this, "high score",
-                RelativeLayout.ALIGN_PARENT_RIGHT);
+                RelativeLayout.ALIGN_PARENT_RIGHT, Color.GREEN);
 
         Bundle recievedIntentFromMenu = getIntent().getExtras();
         int difficultyMode = recievedIntentFromMenu.getInt(MenuActivity.DIFFICULTY_MODE);
