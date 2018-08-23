@@ -23,7 +23,7 @@ public class SnakeTest {
     }
 
     @Test
-    public void deepCopyIsSameValuesAtCopy(){
+    public void testDeepCopyHasSameValuesAtCopy(){
         this.snake.move("n");
         Snake snake2 = (Snake) this.snake.clone();
         assertEquals(snake.getHeadAndBody(), snake2.getHeadAndBody());
@@ -34,14 +34,14 @@ public class SnakeTest {
     }
 
     @Test
-    public void deepCopyObjRefIsDifferent(){
+    public void testDeepCopyObjRefIsDifferent(){
         Snake snake2 = (Snake) this.snake.clone();
         assertNotEquals(snake, snake2);
         assertTrue(snake != snake2);
     }
 
     @Test
-    public void testCloneMutationEffects(){
+    public void testCloneMutatingCloudDoesntAffectOriginalObject(){
         Snake snake2 = (Snake) this.snake.clone();
         snake2.move("n");
         snake2.move("n");

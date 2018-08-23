@@ -31,7 +31,7 @@ public class ScoreTextView extends android.support.v7.widget.AppCompatTextView i
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                setText("apples: " + Integer.toString(score));
+                setText("score: " + Integer.toString(score));
                 invalidate();
             }
         });
