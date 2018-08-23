@@ -26,9 +26,10 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent myService = new Intent(MenuActivity.this, BackgroundServicePlayMusic.class);
-        myService.setAction("");
-        startService(myService);
+        // background music
+//        Intent myService = new Intent(MenuActivity.this, BackgroundServicePlayMusic.class);
+//        myService.setAction("");
+//        startService(myService);
 
         LinearLayout root = new LinearLayout(this);
         root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,

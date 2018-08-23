@@ -42,14 +42,14 @@ public class MainActivity extends AppCompatActivity {
         this.game.setSnakeGameListener(new SnakeGameListener() {
             @Override
             public void onAppleEaten(int score) {
-                new PlaySoundThread(getApplicationContext(),  R.raw.power_up, 0.2f).run();
+                new PlaySoundThread(getApplicationContext(),  R.raw.power_up, 0.4f).run();
                 mScoreTextView.updateScore(score);
 
             }
 
             @Override
             public void onGameOver() {
-                new PlaySoundThread(getApplicationContext(),  R.raw.game_over, 0.3f).run();
+                new PlaySoundThread(getApplicationContext(),  R.raw.game_over, 0.4f).run();
             }
         });
 
