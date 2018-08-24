@@ -306,13 +306,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void vibrate(){
         Vibrator vibrator;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            vibrator = getApplicationContext().getSystemService(Vibrator.class);
+        vibrator = getApplicationContext().getSystemService(Vibrator.class);
+
+        if (vibrator.hasVibrator()) {
             Log.d("has vibrator", Boolean.toString(vibrator.hasVibrator()));
 
             VibrationEffect effect;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                effect = VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE);
+//                VibrationEffect.DEFAULT_AMPLITUDE
+                effect = VibrationEffect.createOneShot(50, 200);
                 vibrator.vibrate(effect);
             }else{
                 vibrator.vibrate(50);
