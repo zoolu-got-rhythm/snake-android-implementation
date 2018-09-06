@@ -145,7 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         final Button leftBtn = new Button(this);
-        leftBtn.setText("left");
+        leftBtn.setText("◀");
+        leftBtn.setTextSize(35f);
         leftBtn.setTextColor(Color.WHITE);
 
         final int nesGreen = getResources().getColor(R.color.nesGreen);
@@ -174,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         final Button upBtn = new Button(this);
-        upBtn.setText("up");
+        upBtn.setText("▲");
+        upBtn.setTextSize(35f);
         upBtn.setTextColor(Color.WHITE);
 
         // blue rgb(0, 102, 255)
@@ -205,7 +207,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         final Button downBtn = new Button(this);
-        downBtn.setText("down");
+        downBtn.setText("▼");
+        downBtn.setTextSize(35f);
         downBtn.setTextColor(Color.WHITE);
         final int yellowNesColour = getResources().getColor(R.color.nesYellow);
         downBtn.setBackgroundColor(yellowNesColour);
@@ -238,7 +241,8 @@ public class MainActivity extends AppCompatActivity {
         buttonsContainer.addView(leftBtn);
 
         final Button rightBtn = new Button(this);
-        rightBtn.setText("right");
+        rightBtn.setText("▶");
+        rightBtn.setTextSize(35f); 
         rightBtn.setTextColor(Color.WHITE);
 
         //red 255, 51, 0
