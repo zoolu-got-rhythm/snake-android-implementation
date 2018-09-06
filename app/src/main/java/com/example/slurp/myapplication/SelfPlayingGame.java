@@ -91,7 +91,7 @@ public class SelfPlayingGame extends Game{
             }
         }
 
-        Log.d("allowed dirs", allowedDirections.toString());
+//        Log.d("allowed dirs", allowedDirections.toString());
 
         return allowedDirections.get(
                 (int) Math.floor(Math.random() * allowedDirections.size())

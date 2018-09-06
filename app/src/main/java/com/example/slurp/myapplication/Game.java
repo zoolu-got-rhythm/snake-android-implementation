@@ -1,6 +1,7 @@
 package com.example.slurp.myapplication;
 
 import android.graphics.Point;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -91,7 +92,7 @@ public class Game extends Observable{
         }
     }
 
-    public void update(){
+    public synchronized void update(){
         // player mode
         // self-navigate mode
 
@@ -185,6 +186,7 @@ public class Game extends Observable{
         return oppositeDir;
     }
 
+    @NonNull
     private synchronized Boolean isDirectionAloud(String currentPlayerDirection){
         if(this.playerDirectionsBuffer[1] != null)
             if(oppositeDirectionOfDir(currentPlayerDirection).equals(playerDirectionsBuffer[1]))
