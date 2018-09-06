@@ -53,6 +53,7 @@ public class MenuActivity extends AppCompatActivity {
         game.addObserver(snakeGameView);
         game.initGame();
 //        game.setCurrentPlayerDirection("s");
+        game.setCurrentApple(null);
         game.startGame();
 
 //        Timer timer = new Timer();
@@ -85,6 +86,7 @@ public class MenuActivity extends AppCompatActivity {
         easyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra(DIFFICULTY_MODE, 6);
                 startActivity(intent);
@@ -105,6 +107,7 @@ public class MenuActivity extends AppCompatActivity {
         hardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra(DIFFICULTY_MODE, 12);
                 startActivity(intent);

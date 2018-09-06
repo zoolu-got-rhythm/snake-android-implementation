@@ -15,7 +15,7 @@ public class SelfPlayingGame extends Game{
 
     public SelfPlayingGame(int framerate, int snakeLength, int gridSize) {
         super(framerate, snakeLength, gridSize);
-
+//        super.setCurrentApple(null);
 //        super.getCurrentApple().
         // set current apple = null
     }
@@ -28,7 +28,6 @@ public class SelfPlayingGame extends Game{
         super.getPlayerSnake().move(
                 this.currentLegalDirection != null ? currentLegalDirection : "w");
 
-        super.setCurrentApple(null);
     }
 
     private String generateLegalDirection(){
