@@ -14,12 +14,10 @@
 
         <service android:name=".BackgroundServicePlayMusic" />
 
-        <activity android:name=".MainActivity">
-
-
-
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".MenuActivity">
+
+        <activity android:name=".MenuActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

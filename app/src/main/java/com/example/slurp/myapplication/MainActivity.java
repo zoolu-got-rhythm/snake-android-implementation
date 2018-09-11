@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Button rightBtn = new Button(this);
         rightBtn.setText("▶");
-        rightBtn.setTextSize(35f); 
+        rightBtn.setTextSize(35f);
         rightBtn.setTextColor(Color.WHITE);
 
         //red 255, 51, 0
