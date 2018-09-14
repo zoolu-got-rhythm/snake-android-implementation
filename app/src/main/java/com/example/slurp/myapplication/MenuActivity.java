@@ -39,7 +39,7 @@ public class MenuActivity extends AppCompatActivity {
         root.setBackgroundColor(Color.BLACK);
 
         TextView header = new TextView(this);
-        header.setText("Snake v1.1");
+        header.setText("Snake v1.2");
         header.setTextSize(40f);
         header.setAllCaps(true);
         header.setTextColor(getResources().getColor(R.color.purple));

@@ -34,10 +34,11 @@ public class SnakeGameView extends View implements Observer{
                 this.height + 36);
 
         this.setLayoutParams(layoutParams);
-        this.setBackgroundColor(Color.BLACK);
+//        this.setBackgroundColor(Color.BLACK);
 
         this.mPaint = new Paint();
         this.mPaint.setColor(getResources().getColor(R.color.pink));
+
 //        this.mPaint.setStrokeWidth(16f);
 //        this.mPaint.setStyle(Paint.Style.STROKE);
 
@@ -48,10 +49,21 @@ public class SnakeGameView extends View implements Observer{
         // draw
 //            canvas.drawCircle(tap.getPoint().x, tap.getPoint().y, tap.getCurrentRadius(), this.mPaint);
 
+        Paint mBackgroundTilePaint = new Paint();
+        mBackgroundTilePaint.setColor(Color.DKGRAY);
 
         int squareSize = this.width / this.currentGameState.getBoard().xTiles;
         System.out.println(squareSize);
         Log.d("square size", Integer.toString(squareSize));
+        for(int i = 0; i <= this.currentGameState.getBoard().xTiles; i++){
+            for(int j = 0; j <= this.currentGameState.getBoard().yTiles; j++){
+                canvas.drawRect(new Rect(i * squareSize,
+                                j * squareSize, (i * squareSize) + squareSize - 2,
+                                (j * squareSize) + squareSize - 2),
+                        mBackgroundTilePaint);
+            }
+        }
+
 
             Paint redPaint = new Paint();
             redPaint.setColor(Color.RED);
@@ -61,8 +73,8 @@ public class SnakeGameView extends View implements Observer{
 
             if(apple != null)
                 canvas.drawRect(new Rect(apple.x * squareSize,
-                        apple.y * squareSize, (apple.x * squareSize) + squareSize,
-                        (apple.y * squareSize) + squareSize), redPaint);
+                        apple.y * squareSize, (apple.x * squareSize) + squareSize - 2,
+                        (apple.y * squareSize) + squareSize - 2), redPaint);
 
 
             for (Point p : this.currentGameState.getPlayerSnake().getHeadAndBody()) {
@@ -71,17 +83,16 @@ public class SnakeGameView extends View implements Observer{
                     Paint snakeHeadPaint = new Paint();
                     snakeHeadPaint.setColor(getResources().getColor(R.color.purple));
                     canvas.drawRect(new Rect(p.x * squareSize,
-                                    p.y * squareSize, (p.x * squareSize) + squareSize,
-                                    (p.y * squareSize) + squareSize),
+                                    p.y * squareSize, (p.x * squareSize) + squareSize - 2,
+                                    (p.y * squareSize) + squareSize -2),
                             snakeHeadPaint);
 
                 }else{
                     canvas.drawRect(new Rect(p.x * squareSize,
-                                    p.y * squareSize, (p.x * squareSize) + squareSize,
-                                    (p.y * squareSize) + squareSize),
+                                    p.y * squareSize, (p.x * squareSize) + squareSize - 2,
+                                    (p.y * squareSize) + squareSize - 2),
                             this.mPaint);
                 }
-
             }
 
         if(currentGameState.getGameOver()) {

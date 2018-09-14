@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         LinearLayout root = findViewById(R.id.root);
+        root.setBackgroundColor(Color.BLACK);
         root.setGravity(Gravity.CENTER);
 
 
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 new RelativeLayout.LayoutParams(710, 500);
 //        buttonsContainerParams.addRule();
         buttonsContainer.setLayoutParams(buttonsContainerParams);
-        buttonsContainer.setBackgroundColor(Color.DKGRAY);
+//        buttonsContainer.setBackgroundColor(Color.DKGRAY);
 //        buttonsContainer.setGravity(Gravity.BOTTOM);
 
         root.addView(buttonsContainer);
